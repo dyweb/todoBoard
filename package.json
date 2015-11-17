@@ -1,0 +1,31 @@
+{
+  "name": "todo-board",
+  "version": "0.0.1",
+  "description": "A tutorial project building todo list with both frontend and backend.",
+  "main": "app/index.js",
+  "scripts": {
+    "sign": "node app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dyweb/todoBoard.git"
+  },
+  "keywords": [
+    "tutorial",
+    "todo"
+  ],
+  "author": "Web Group of dyWeb <web@dongyue.io> (https://github.com/dyweb)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dyweb/todoBoard/issues"
+  },
+  "homepage": "https://github.com/dyweb/todoBoard",
+  "dependencies": {
+    "chalk": "1.1.1",
+    "fs-extra": "0.26.2",
+    "inquirer": "0.11.0",
+    "log4js": "0.6.27",
+    "strip-json-comments": "1.0.4"
+  }
+}
