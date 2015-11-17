@@ -1,7 +1,6 @@
 var read = require('./read');
 var chalk = require('chalk');
 var inquirer = require('inquirer');
-var getGitName = require('./get-git-name');
 var log = require('./log');
 var fs = require('fs-extra');
 
@@ -13,6 +12,16 @@ function isDuplicate(username) {
   } catch (e) {
     fs.mkdirSync(userpath);
     return false;
+  }
+}
+
+function getDefaultUserName() {
+  try {
+    // The 1st line of HEAD's log must be clone. The cloner must be the current Git user.
+    return fs.readFileSync('./.git/logs/HEAD', 'utf8').match(/^(?:[0-9a-f]+ ){2}(.+?) /)[1];
+  } catch (e) {
+    // Use current system user instead.
+    return process.env.LOGNAME;
   }
 }
 
@@ -29,7 +38,7 @@ var sign = module.exports = {
       name: 'username',
       type: 'input',
       message: message,
-      default: logged ? sign.env.username : getGitName(),
+      default: logged ? sign.env.username : getDefaultUserName(),
       validate: x => /^[0-9a-zA-Z._\-]+$/.test(x) || 'Only 0-9, a-z, A-Z and . _ - allowed.'
     }], answers => {
       if (logged && sign.env.username === answers.username) {
