@@ -5,6 +5,17 @@ var getGitName = require('./get-git-name');
 var log = require('./log');
 var fs = require('fs-extra');
 
+function isDuplicate(username) {
+  var userpath = './participants/' + username;
+  try {
+    fs.statSync(userpath);
+    return true;
+  } catch (e) {
+    fs.mkdirSync(userpath);
+    return false;
+  }
+}
+
 var sign = module.exports = {
   isLogged: () => {
     return !!sign.env || !!(sign.env = read('./.env.json', true));
@@ -25,9 +36,11 @@ var sign = module.exports = {
         cb();
         return;
       }
-      // TODO: check if duplicate.
-      sign.env = answers;
-      fs.writeJsonSync('./.env.json', answers);
+      log.info(
+        isDuplicate(answers.username) ? 'Login as existing user %s.' : 'Create new user %s.',
+        chalk.green(answers.username)
+      );
+      fs.writeJsonSync('./.env.json', sign.env = answers);
       cb();
     });
   }
